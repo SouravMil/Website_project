@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deb Study Center | Expert Commerce Coaching Shibpur</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0d2a4d;
+            --sky-blue: #f0f7ff;
+            --accent-gold: #c5a059;
+            --text-dark: #2c3e50;
+            --header-height: 85px;
+        }
+
+        html { scroll-behavior: smooth; scroll-padding-top: var(--header-height); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { color: var(--text-dark); background-color: #fff; overflow-x: hidden; }
+
+        /* Navigation */
+        nav { background: white; height: var(--header-height); padding: 0 8%; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; width: 100%; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .logo-box { display: flex; align-items: center; gap: 15px; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { text-decoration: none; color: var(--primary-blue); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; transition: 0.3s; }
+        nav ul li a.active { color: var(--accent-gold); border-bottom: 3px solid var(--accent-gold); }
+
+        /* HERO SLIDER SECTION */
+        .hero-container {
+            margin-top: var(--header-height);
+            height: 75vh;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .slide-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(13, 42, 77, 0.7); /* Deep blue overlay */
+        }
+
+        /* TEXT SLIDER LOGIC */
+        .text-slider-box {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 5;
+            color: white;
+            pointer-events: none;
+        }
+
+        .text-slide {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.8s ease-in-out;
+        }
+
+        .text-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .text-slide h1 { font-size: 3.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.4); }
+
+        /* STATIC BUTTON - STAYS FIXED */
+        .static-button-container {
+            position: absolute;
+            bottom: 25%;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .btn-gold {
+            background: var(--accent-gold);
+            color: white;
+            padding: 18px 45px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-gold:hover { background: #b08d48; transform: scale(1.05); }
+
+        /* Trust Rating Banner */
+        .rating-banner { background: var(--sky-blue); padding: 25px 8%; display: flex; justify-content: center; align-items: center; gap: 40px; border-bottom: 1px solid #ddd; }
+        .rating-item { display: flex; align-items: center; gap: 10px; }
+        .stars { color: #f1c40f; }
+
+        /* Gallery */
+        section { padding: 80px 8%; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { color: var(--primary-blue); font-size: 2.2rem; }
+        .divider { width: 60px; height: 4px; background: var(--accent-gold); margin: 10px auto; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .gallery-item { height: 260px; border-radius: 8px; overflow: hidden; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* ENQUIRY FORM */
+        .enquiry-section { background: var(--sky-blue); display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; padding: 80px 8%; }
+        .form-card { background: white; padding: 45px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full { grid-column: span 2; }
+        
+        label { display: block; margin-bottom: 5px; font-weight: 700; color: var(--primary-blue); font-size: 0.85rem; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+        input:focus { border-color: var(--accent-gold); }
+
+        footer { background: var(--primary-blue); color: white; padding: 50px 8% 20px; text-align: center; }
+
+        @media (max-width: 992px) {
+            .enquiry-section { grid-template-columns: 1fr; }
+            .text-slide h1 { font-size: 2.2rem; }
+            nav ul { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-box">
+            <!-- Simulated Logo -->
+            <div style="background: var(--primary-blue); width: 50px; height: 50px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; text-align: center;">DEB LOGO</div>
+            <div>
+                <p style="font-weight: 800; color: var(--primary-blue); line-height: 1.1;">DEB STUDY CENTER</p>
+                <p style="color: var(--accent-gold); font-size: 0.75rem; font-weight: bold;">SHIBPUR • ESTD. 2005</p>
+            </div>
+        </div>
+        <ul>
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#gallery" class="nav-link">Gallery</a></li>
+            <li><a href="#enquiry" class="nav-link">Admission</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SLIDER -->
+    <div id="home" class="hero-container">
+        <!-- Background Slides -->
+        <div class="slide-wrapper" id="bg-wrapper">
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80');"><div class="slide-overlay"></div></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80');"><div class="slide-overlay"></div></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&q=80');"><div class="slide-overlay"></div></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80');"><div class="slide-overlay"></div></div>
+        </div>
+
+        <!-- Text Slides -->
+        <div class="text-slider-box">
+            <div class="text-slide active"><h1>Shaping Careers for 20 Years</h1></div>
+            <div class="text-slide"><h1>Complete Commitment</h1></div>
+            <div class="text-slide"><h1>Conceptual Clarity</h1></div>
+            <div class="text-slide"><h1>Proven Success Results</h1></div>
+        </div>
+
+        <!-- STATIC BUTTON -->
+        <div class="static-button-container">
+            <a href="#enquiry" class="btn-gold">Join Next Batch</a>
+        </div>
+    </div>
+
+    <div class="rating-banner">
+        <div class="rating-item">
+            <h2 style="font-size: 2.5rem; color: var(--primary-blue);">4.9</h2>
+            <div>
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p style="font-size: 0.8rem; font-weight: bold;">Google Rating</p>
+            </div>
+        </div>
+        <div style="width: 1px; height: 40px; background: #ccc;"></div>
+        <div class="rating-item">
+            <h2 style="font-size: 2.5rem; color: var(--primary-blue);">1500+</h2>
+            <p style="font-size: 0.8rem; font-weight: bold;">Successful Students</p>
+        </div>
+    </div>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <div class="section-header">
+            <h2>Life at Deb Study Center</h2>
+            <div class="divider"></div>
+            <p>Photographs from our Carry Road, Shibpur facility.</p>
+        </div>
+        <div class="gallery-grid">
+            <!-- PASTE THE IMAGE LINKS FROM GOOGLE MAPS IN THE SRC BELOW -->
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80" alt="Center"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&q=80" alt="Board"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80" alt="Students"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80" alt="Events"></div>
+        </div>
+    </section>
+
+    <!-- DETAILED ADMISSION FORM -->
+    <section id="enquiry" class="enquiry-section">
+        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.58410!2d88.310659!3d22.55725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a0279c6d59b099b%3A0x6b490f8452332205!2sCarry%20Rd%2C%20Shibpur%2C%20Howrah!5e0!3m2!1sen!2sin!4v1715000000" width="100%" height="100%" style="border:0; min-height: 500px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <div class="form-card">
+            <h3 style="color: var(--primary-blue); margin-bottom: 25px; font-size: 1.5rem;">New Student Admission Enquiry</h3>
+            <form id="enquiryForm">
+    <div class="form-grid">
+        <div>
+            <label>Student Full Name *</label>
+            <input type="text" name="name" required>
+        </div>
+        <div>
+            <label>Contact Number (WhatsApp) *</label>
+            <input type="tel" name="phone" required>
+        </div>
+        <div class="full">
+            <label>Current School or College *</label>
+            <input type="text" name="institution" required>
+        </div>
+        <div>
+            <label>Class Seeking Admission *</label>
+            <select name="grade" required>
+                <option value="">Choose Grade</option>
+                <option value="Class 11">Class 11 (Commerce)</option>
+                <option value="Class 12">Class 12 (Commerce)</option>
+                <option value="B.Com 1">B.Com Semester 1/2</option>
+                <option value="B.Com 2">B.Com Semester 3/4</option>
+                <option value="B.Com 3">B.Com Semester 5/6</option>
+            </select>
+        </div>
+        <div>
+            <label>Board / University *</label>
+            <select name="board" required>
+                <option value="">Select Board</option>
+                <option value="WBCHSE">West Bengal Board</option>
+                <option value="CBSE">CBSE</option>
+                <option value="ISC">ISC</option>
+                <option value="CU">Calcutta University</option>
+            </select>
+        </div>
+        <div class="full">
+            <label>Message</label>
+            <textarea name="message" rows="4"></textarea>
+        </div>
+    </div>
+    <button type="submit" id="submitBtn" class="btn-gold" style="width: 100%; border:none; cursor:pointer; margin-top: 20px;">Submit Detailed Enquiry</button>
+</form>
+        </div>
+    </section>
+
+    <section id="contact" style="text-align: center; background: white;">
+        <h3 style="color: var(--primary-blue);">Reach Us at Carry Road</h3>
+        <p style="margin: 20px 0;"><i class="fas fa-map-marker-alt" style="color: var(--accent-gold); margin-right: 10px;"></i> 140/7, Carry Rd, Shibpur, Howrah - 711104</p>
+        <p><i class="fas fa-phone-alt" style="color: var(--accent-gold); margin-right: 10px;"></i> +91 94334 XXXXX</p>
+    </section>
+
+    <footer>
+        <p style="font-weight: 800; color: var(--accent-gold); margin-bottom: 10px; font-size: 1.2rem;">DEB STUDY CENTER</p>
+        <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2024 Deb Study Center. Trusted Commerce Mentorship in Shibpur for over 20 years.</p>
+    </footer>
+
+    <script>
+        // SLIDER LOGIC
+        const bgWrapper = document.getElementById('bg-wrapper');
+        const textSlides = document.querySelectorAll('.text-slide');
+        let current = 0;
+        const total = 4;
+
+        function nextSlide() {
+            // Update Background Slide (Move wrapper to the left)
+            current = (current + 1) % total;
+            bgWrapper.style.transform = `translateX(-${current * 100}%)`;
+            bgWrapper.style.transition = 'transform 0.8s ease-in-out';
+
+            // Update Text Slides
+            textSlides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if(index === current) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        setInterval(nextSlide, 5000); // Change every 5 seconds
+
+        // SCROLL SPY LOGIC
+        const sections = document.querySelectorAll("section, .hero-container");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        window.addEventListener("scroll", () => {
+            let currentId = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    currentId = section.getAttribute("id");
+                }
+            });
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(currentId)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwsqXsqndmQOlz9QvV0zYZED-O6bT_zb_VVcvNGORLzR3UHd1G3nzr0S4gu84_pyI55/exec';
+const form = document.getElementById('enquiryForm');
+const btn = document.getElementById('submitBtn');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  btn.disabled = true;
+  btn.innerText = "Sending...";
+
+  fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+    .then(response => {
+        alert("Success! Your enquiry has been sent to Deb Study Center.");
+        btn.disabled = false;
+        btn.innerText = "Submit Detailed Enquiry";
+        form.reset();
+    })
+    .catch(error => {
+        alert("Error! Something went wrong. Please call us directly.");
+        btn.disabled = false;
+        btn.innerText = "Submit Detailed Enquiry";
+    });
+});
+    </script>
+</body>
+</html>
